@@ -1,7 +1,7 @@
 # scu_data_mining
 海量数据挖掘与智能决策课程coursework
 #
-[![](https://img.shields.io/badge/Download-Latest-yellow.svg)](https://github.com/yehxl/scu_data_mining/archive/refs/heads/main.zip)
+[![](https://img.shields.io/badge/Download-Latest-yellow.svg)](https://github.com/yehxl/scu_data_mining/archive/master.zip)
 ## Project abstract
 问题：基于豆瓣推荐的分层挖掘频繁模式/关联规则
 
