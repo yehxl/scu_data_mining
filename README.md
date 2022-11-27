@@ -1,0 +1,2 @@
+# scu_data_mining
+海量数据挖掘与智能决策课程coursework
