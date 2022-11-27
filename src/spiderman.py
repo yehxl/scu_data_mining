@@ -215,11 +215,11 @@ class SpiderMan:
         fixed_url = "https://movie.douban.com"
         _url = fixed_url + url
         grab_num = 500
-        top100 = []
+        _top = []
 
         browser = webdriver.Chrome()
         browser.get(_url)
-        for i in range(10):
+        for i in range(int(grab_num / 20)):
             browser.execute_script("window.scrollTo(0,document.body.scrollHeight)")
             time.sleep(2)
 
@@ -245,9 +245,9 @@ class SpiderMan:
             # else:
             #     title = 'unknown'
 
-            top100.append(link)
+            _top.append(link)
 
-        return top100
+        return _top
 
     def store(self):
         # urls中链接如下，是类型的页面
@@ -255,7 +255,7 @@ class SpiderMan:
         urls = self.grab_urls()
         for url in urls:
             # 得到某种类型top100的链接
-            top100 = self.grab_movies(url)
+            _top = self.grab_movies(url)
             _type = re.search('type=(.*?)&', url)
             if _type:
                 _type = _type.group()
@@ -273,7 +273,7 @@ class SpiderMan:
                          'genre0', 'genre1', 'genre2', 'genre3', 'region0', 'region1', 'region2',
                          'lang0', 'lang1', 'lang2', 'ReleaseDate',
                          'rd0', 'rd1', 'rd2', 'rd3', 'rd4', 'rd5', 'rd6', 'rd7', 'rd8', 'rd9']
-            for t in top100:
+            for t in _top:
                 # 目前都作为中心电影，也就是要找推荐的10个电影
                 infos = self.get_movie_detail(t, center=True)
                 row = [t]
