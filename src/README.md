@@ -1,6 +1,6 @@
 # SpiderMan 爬虫类
 
-## __\__init\__()
+## __init__()
 
 ```python
 def __init__(self, choice_num, interval=100)
