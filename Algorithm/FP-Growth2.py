@@ -1,6 +1,8 @@
 # 方法2：自主实现
 
 import time
+import pandas as pd
+
 
 def get_time(func):
     """
@@ -346,15 +348,24 @@ def generate_association_rules(patterns, min_conf):
 
 
 if __name__ == '__main__':
-
-    item_sets = [
-        ['f', 'a', 'c', 'd', 'g', 'i', 'm', 'p'],
-        ['a', 'b', 'c', 'f', 'l', 'm', 'o'],
-        ['b', 'f', 'h', 'j', 'o', 'w'],
-        ['b', 'c', 'k', 's', 'p'],
-        ['a', 'f', 'c', 'e', 'l', 'p', 'm', 'n']
-    ]
-
-    frequent_patterns = find_frequent_patterns(item_sets, 3)
-    for frequent_pattern in generate_association_rules(frequent_patterns, 0):
-        print(frequent_pattern)
+    table = []
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\爱情_.csv")))
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\动作.csv")))
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\短片.csv")))
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\犯罪.csv")))
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\惊悚.csv")))
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\剧情.csv")))
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\科幻.csv")))
+    table.append(pd.DataFrame(pd.read_csv("D:\\projects\\scu_data_mining\\data\\悬疑.csv")))
+    # print(table_1)
+    ct = 0
+    for i in table:
+        frequent_patterns = find_frequent_patterns(i, 3)
+        filename = "D:\\projects\\scu_data_mining\\Algorithm\\" + str(ct) + ".txt"
+        print(filename)
+        f = open(file=filename, mode="a", newline="", encoding="utf-8-sig")
+        for frequent_pattern in generate_association_rules(frequent_patterns, 0):
+            f.write(frequent_pattern)
+            f.write('\n')
+        f.close()
+        ct = ct + 1
