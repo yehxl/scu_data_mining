@@ -76,7 +76,7 @@ def apriori(dataset, min_sup):
 
 
 # 生成关联规则
-def generateRules(L, supportData, min_conf):
+def generateRules(L, supportData, min_conf, path):
     # 包含置信度的规则列表
     bigRuleList = []
     # 从频繁2项集开始遍历
@@ -85,20 +85,24 @@ def generateRules(L, supportData, min_conf):
             # 对于每一个项集, 生成其全排列
             H1 = [frozenset([item]) for item in freqSet]
             if (i > 1):
-                rulesFromConseq(freqSet, H1, supportData, bigRuleList, min_conf)
+                rulesFromConseq(freqSet, H1, supportData, bigRuleList, min_conf, path)
             else:
-                calcConf(freqSet, H1, supportData, bigRuleList, min_conf)
+                calcConf(freqSet, H1, supportData, bigRuleList, min_conf, path)
     return bigRuleList
 
 
 # 计算是否满足最小可信度
-def calcConf(freqSet, H, supportData, brl, min_conf):
+def calcConf(freqSet, H, supportData, brl, min_conf, path):
     prunedH = []
     # 用每个conseq作为后件
     for conseq in H:
         # 计算置信度
         conf = supportData[freqSet] / supportData[freqSet - conseq]
         if conf >= min_conf:
+            f = open(file=path, mode="a", newline="", encoding="utf-8-sig")
+            # f.write(str(freqSet - conseq, '--->', conseq, 'conf:', conf))
+            print(freqSet - conseq, '--->', conseq, 'conf:', conf, file=f)
+            f.close()
             print(freqSet - conseq, '--->', conseq, 'conf:', conf)
             # 元组中的三个元素：前件， 后件， 置信度
             brl.append((freqSet - conseq, conseq, conf))
@@ -108,29 +112,29 @@ def calcConf(freqSet, H, supportData, brl, min_conf):
 
 
 # 对规则进行评估
-def rulesFromConseq(freqSet, H, supportData, brl, min_conf):
+def rulesFromConseq(freqSet, H, supportData, brl, min_conf, path):
     m = len(H[0])
     if len(freqSet) > (m + 1):
         Hmp1 = aprioriGen(H, m + 1)
 
-        Hmp1 = calcConf(freqSet, Hmp1, supportData, brl, min_conf)
+        Hmp1 = calcConf(freqSet, Hmp1, supportData, brl, min_conf, path)
         # 判断：若X->Y不满足置信度要求，那么 X- X' -> Y+ X'也不满足置信度要求，其中 X'是 X的子集
         if len(Hmp1) > 0:
-            rulesFromConseq(freqSet, Hmp1, supportData, brl, min_conf)
+            rulesFromConseq(freqSet, Hmp1, supportData, brl, min_conf, path)
 
 
-if __name__ == "__main__":
-    # 加载数据集
-    dataset = [('eggs', 'bacon', 'soup'),
-               ('eggs', 'bacon', 'apple'),
-               ('soup', 'bacon', 'banana')]
+# if __name__ == "__main__":
+    # # 加载数据集
+    # dataset = [('eggs', 'bacon', 'soup'),
+               # ('eggs', 'bacon', 'apple'),
+               # ('soup', 'bacon', 'banana')]
 
-    # 设置参数: min_sup 最小支持度， min_conf 最小置信度
-    min_sup = 0.2
-    min_conf = 0.7
+    # # 设置参数: min_sup 最小支持度， min_conf 最小置信度
+    # min_sup = 0.2
+    # min_conf = 0.7
 
-    # 生成频繁项集和统计其支持度
-    L, supportData = apriori(dataset, min_sup)
+    # # 生成频繁项集和统计其支持度
+    # L, supportData = apriori(dataset, min_sup)
 
-    # 根据频繁项集生成关联规则
-    bigRuleList = generateRules(L, supportData, min_conf)
+    # # 根据频繁项集生成关联规则
+    # bigRuleList = generateRules(L, supportData, min_conf)
