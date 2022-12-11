@@ -2,9 +2,9 @@
 from efficient_apriori import apriori
 
 # 数据集设置
-transactions = [('eggs', 'bacon', 'soup'),
-                ('eggs', 'bacon', 'apple'),
-                ('soup', 'bacon', 'banana')]
+transactions = [['eggs', 'bacon', 'soup'],
+                ['eggs', 'bacon', 'apple'],
+                ['soup', 'bacon', 'banana']]
 
 # #从文件中读入数据集
 # import tensorflow as tf
