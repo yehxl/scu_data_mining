@@ -119,6 +119,6 @@ def grabOne(url):
 
 
 if __name__ == '__main__':
-    url = 'https://movie.douban.com/subject/1293181/'
+    url = 'https://movie.douban.com/subject/1292679/?from=subject-page'
     info = grabOne(url=url)
     print(info)
