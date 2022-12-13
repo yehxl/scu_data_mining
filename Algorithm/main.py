@@ -3,10 +3,14 @@ import pandas as pd
 from pandas import DataFrame as df
 import Apriori2
 from efficient_apriori import apriori
+import math
 
 # class_list = ['爱情', '动作', '短片','犯罪', '惊悚', '剧情', '科幻', '悬疑']
-class_list = ['爱情', '动作', '短片','犯罪', '惊悚', '剧情', '科幻', '悬疑']
+class_list = ['动作', '惊悚', '剧情','悬疑']
+regions_2 = ['east','west','美国', '日韩', '中国', '法国', '英国']
+regions_3 = ['美国', '日韩', '中国', '法国', '英国']
 col_list = ['title', 'rd0','rd1','rd2','rd3','rd4','rd5','rd6','rd7','rd8','rd9']
+years = ['1979年及以前', '1980-1999','2000年及以后']
 CLASS_LAYER = [0.2, 0.7]
 YEAR_LAYER = [0.3, 0.7]
 
@@ -61,10 +65,39 @@ def layer_mining(data_list: list, name:list, layer: str = 'year'):
         # write the res to the file
         if layer == 'year':
             filename = "D:\\projects\\scu_data_mining\\Algorithm\\year_layer\\" + str(name[ct2]) + "_year.txt"
+            temp = d[col_list]
         else:
             filename = "D:\\projects\\scu_data_mining\\Algorithm\\class_layer\\" + str(name[0]) + '_' + class_list[ct2] + "_class.txt"
-        
-        temp = d[col_list]
+            col_s = ['title']
+            series_list = []
+            for index, row in d.iterrows():
+                if row['rd0_genre0'] == class_list[ct2] or row['rd0_genre1'] == class_list[ct2]:
+                    col_s.append('rd0')
+                if row['rd1_genre0'] == class_list[ct2] or row['rd1_genre1'] == class_list[ct2]:
+                    col_s.append('rd1')
+                if row['rd2_genre0'] == class_list[ct2] or row['rd2_genre1'] == class_list[ct2]:
+                    col_s.append('rd2')
+                if row['rd3_genre0'] == class_list[ct2] or row['rd3_genre1'] == class_list[ct2]:
+                    col_s.append('rd3')
+                if row['rd4_genre0'] == class_list[ct2] or row['rd4_genre1'] == class_list[ct2]:
+                    col_s.append('rd4')
+                if row['rd5_genre0'] == class_list[ct2] or row['rd5_genre1'] == class_list[ct2]:
+                    col_s.append('rd5')
+                if row['rd6_genre0'] == class_list[ct2] or row['rd6_genre1'] == class_list[ct2]:
+                    col_s.append('rd6')
+                if row['rd7_genre0'] == class_list[ct2] or row['rd7_genre1'] == class_list[ct2]:
+                    col_s.append('rd7')
+                if row['rd8_genre0'] == class_list[ct2] or row['rd8_genre1'] == class_list[ct2]:
+                    col_s.append('rd8')
+                if row['rd9_genre0'] == class_list[ct2] or row['rd9_genre1'] == class_list[ct2]:
+                    col_s.append('rd9')
+                series_list.append(row[col_s])
+                col_s = ['title']
+            frame = pd.DataFrame(series_list)
+            temp = frame.values.tolist()
+            for i in range(len(temp)):
+                temp[i] = [temp[i] for temp[i] in temp[i] if temp[i] == temp[i]]
+
         if temp.shape[0] >= 5:
             # L, support_data = Apriori2.apriori(d.values.tolist(), min_sup=min_sup)
             # Apriori2.generateRules(L, supportData=support_data, min_conf=min_conf, path=filename)
@@ -94,6 +127,20 @@ def main():
         layer_mining(data_list=data_class_layer, layer='class', name=[tag[ct]])
         ct += 1
 
+def simple(path):
+    src_path = path + '.csv'
+    data = pd.read_csv(src_path).values.tolist()
+    for i in range(len(data)):
+        data[i] = [x for x in data[i] if x == x]
+    f = open(file=path + '_res.txt', mode="a", newline="", encoding="utf-8-sig")
+    itemsets, rules = apriori(data, min_support=0.02, min_confidence=0.7)
+    print(rules, file=f)
+    f.close()
 
 if __name__ == "__main__":
-    main()
+    prefix = 'D:/projects/scu_data_mining/data/depth3_layer/'
+    for k in years:
+        for i in class_list:
+            for j in regions_3:
+                path = prefix + k + '/' + i + '/' + i + '_' + j + '_' + k
+                simple(path)

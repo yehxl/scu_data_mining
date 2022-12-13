@@ -1,0 +1,1 @@
+﻿[{王牌对王牌 The Negotiator} -> {一级恐惧}, {搏击俱乐部 Fight Club} -> {七宗罪}, {第六感} -> {七宗罪}, {异次元骇客} -> {十二猴子}, {十二猴子} -> {异次元骇客}, {王牌对王牌 The Negotiator} -> {洛城机密}, {洛城机密, 王牌对王牌 The Negotiator} -> {一级恐惧}, {一级恐惧, 王牌对王牌 The Negotiator} -> {洛城机密}, {王牌对王牌 The Negotiator} -> {一级恐惧, 洛城机密}]
